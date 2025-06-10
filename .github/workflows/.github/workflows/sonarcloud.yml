@@ -1,0 +1,26 @@
+name: SonarCloud Analysis
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  analyze:
+    name: Analyze with SonarCloud
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    # Paso solo necesario si es proyecto Node.js (React, Angular, Vue, etc.)
+    - name: Setup Node
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: SonarCloud Scan
+      uses: SonarSource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Este lo crea GitHub automático
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # Este es el que tú creaste
